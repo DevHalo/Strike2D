@@ -4,12 +4,16 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Reflection.Emit;
+using System.Runtime.InteropServices.ComTypes;
 using Microsoft.Xna.Framework.Input;
 
 namespace Strike2D
 {
     public static class Settings
     {
+        private const string SETTINGS_FILE_NAME = "settings.cfg";
+        
         #region GRAPHICS
         
         public static int ScreenX         
@@ -62,17 +66,18 @@ namespace Strike2D
             }
             catch (FileNotFoundException e)
             {
-                Console.WriteLine("Settings not found. Creating one.");
+                Console.WriteLine("Settings not found.");
             }
             finally
             {
+                Console.Write("Creating Settings File...");
                 writer = File.CreateText("settings.cfg");
 
                 foreach (FieldInfo field in fields)
                 {
                     switch (field.Name)
                     {
-                            case "Map":
+                            case "KeySettings":
                                 foreach (string value in settings.KeySettings.Map.Keys)
                                 {
                                     writer.WriteLine(value + " = " + settings.KeySettings.Map[value]);
@@ -83,6 +88,9 @@ namespace Strike2D
                                 break;
                     }
                 }
+                
+                writer.Close();
+                Console.Write(" Done. \n");
             }
         }
 
@@ -90,7 +98,27 @@ namespace Strike2D
         {
             if (File.Exists("settings.cfg"))
             {
-                
+                StreamReader reader = File.OpenText("settings.cfg");
+
+                while (!reader.EndOfStream)
+                {
+                    string[] line = reader.ReadLine().Split(' ');
+
+                    // Should be "key = value"
+                    if (line.Length == 3)
+                    {
+                        if (line[2] == "=")
+                        {
+                            string key = line[0];
+
+                            // If the key-value pair is a keybind
+                            if (Enum.IsDefined(typeof(Keys), line[3]))
+                            {
+                                
+                            }
+                        }
+                    }
+                }
             }
             else
             {
