@@ -18,8 +18,6 @@ namespace Strike2D
 
         protected override void Initialize()
         {
-
-            
             base.Initialize();
         }
 
