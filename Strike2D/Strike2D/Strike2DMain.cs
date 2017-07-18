@@ -13,6 +13,7 @@ namespace Strike2D
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
         }
 
         protected override void Initialize()
@@ -23,6 +24,25 @@ namespace Strike2D
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            LoadBase();
+        }
+        
+        /// <summary>
+        /// Loads the config file for basic settings and
+        /// assigns the correct variables
+        /// </summary>
+        private void LoadBase()
+        {
+            Settings.LoadConfig();
+            
+            // Sets the screen up
+            
+            graphics.PreferredBackBufferWidth = Settings.ScreenX;
+            graphics.PreferredBackBufferHeight = Settings.ScreenY;
+            
+            Window.Position = new Point(
+                graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width / 2 - graphics.PreferredBackBufferWidth / 2,
+                graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height / 2 - graphics.PreferredBackBufferHeight / 2);
         }
 
         protected override void UnloadContent()
