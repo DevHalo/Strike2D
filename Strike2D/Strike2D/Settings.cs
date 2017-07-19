@@ -1,6 +1,7 @@
 ﻿// Place where settings are stored
 
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -110,20 +111,21 @@ namespace Strike2D
                     // Should be "key = value"
                     if (line.Length == 3)
                     {
-                        if (line[2] == "=")
+                        if (line[1] == "=")
                         {
                             string key = line[0];
 
                             // If the key-value pair is a keybind
-                            if (Enum.IsDefined(typeof(Keys), line[3]))
+                            if (Enum.IsDefined(typeof(Keys), line[2]))
                             {
                                 try
                                 {
-                                    settings.KeySettings.ModifyKey(line[0], (Keys)Enum.Parse(typeof(Keys), line[3], false));
+                                    settings.KeySettings.ModifyKey(line[0], (Keys)Enum.Parse(typeof(Keys), line[2], false));
+                                    Debug.WriteLineVerbose("Key binding for: " + line[0] + " with Keys." +  line[2]);
                                 }
                                 catch (KeyNotFoundException e)
                                 {
-                                    Debug.WriteLineVerbose("Found invalid key binding in config", Debug.DebugType.Warning);
+                                    Debug.WriteLineVerbose("Key " + "\"" + line[2] + "\"" + " is not a valid keybind", Debug.DebugType.Warning);
                                 }
                             }
                             else
@@ -132,7 +134,11 @@ namespace Strike2D
 
                                 if (field != null)
                                 {
-                                    var value = Cast(line[3], field.GetType());
+                                    var value = Cast(line[2], field.FieldType);
+                                    
+                                    Debug.WriteLineVerbose("Writing to " +  field.Name + " with value " + value.ToString());
+                                    
+                                    field.SetValue(settings, value);
                                 }
                             }
                         }
