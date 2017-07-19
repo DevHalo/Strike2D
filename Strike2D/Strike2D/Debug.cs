@@ -11,6 +11,14 @@ namespace Strike2D
     /// </summary>
     public static class Debug
     {
+        public enum DebugType
+        {
+            Logging,
+            Network,
+            CriticalError,
+            Warning
+        }
+        
         public static List<DebugLine> Log { get; private set; } = new List<DebugLine>();
          
         /// <summary>
@@ -18,7 +26,7 @@ namespace Strike2D
         /// </summary>
         /// <param name="message"></param>
         /// <param name="debugType"></param>
-        public static void WriteLine(string message, DebugLine.DebugType debugType = DebugLine.DebugType.Logging)
+        public static void WriteLine(string message, DebugType debugType = DebugType.Logging)
         {
             Log.Add(new DebugLine(message, debugType));
         }
@@ -26,18 +34,21 @@ namespace Strike2D
         /// <summary>
         /// Writes to the internal log as well as the command line
         /// </summary>
-        public static void WriteLineVerbose(string message, DebugLine.DebugType debugType = DebugLine.DebugType.Logging)
+        public static void WriteLineVerbose(string message, DebugType debugType = DebugType.Logging)
         {
             WriteLine(message, debugType);
 
             Console.ForegroundColor = ConsoleColor.White;
             switch (debugType)
             {
-                case DebugLine.DebugType.Network:
+                case DebugType.Network:
                     Console.ForegroundColor = ConsoleColor.Blue;
                     break;
-                case DebugLine.DebugType.CriticalError:
+                case DebugType.CriticalError:
                     Console.ForegroundColor = ConsoleColor.Red;
+                    break;
+                case DebugType.Warning:
+                    Console.ForegroundColor = ConsoleColor.Yellow;
                     break;
             }
             
@@ -68,17 +79,10 @@ namespace Strike2D
     /// </summary>
     public class DebugLine
     {
-        public enum DebugType
-        {
-            Logging,
-            Network,
-            CriticalError
-        }
-
         public readonly string Message;
-        public readonly DebugType Type;
+        public readonly Debug.DebugType Type;
 
-        public DebugLine(string messsage, DebugType debugType = DebugType.Logging)
+        public DebugLine(string messsage, Debug.DebugType debugType = Debug.DebugType.Logging)
         {
             Message = Message;
             Type = debugType;

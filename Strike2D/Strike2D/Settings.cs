@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.InteropServices.ComTypes;
@@ -98,6 +99,8 @@ namespace Strike2D
         {
             if (File.Exists("settings.cfg"))
             {
+                FieldInfo[] fields = settings.GetType().GetFields();
+
                 StreamReader reader = File.OpenText("settings.cfg");
 
                 while (!reader.EndOfStream)
@@ -114,7 +117,23 @@ namespace Strike2D
                             // If the key-value pair is a keybind
                             if (Enum.IsDefined(typeof(Keys), line[3]))
                             {
-                                
+                                try
+                                {
+                                    settings.KeySettings.ModifyKey(line[0], (Keys)Enum.Parse(typeof(Keys), line[3], false));
+                                }
+                                catch (KeyNotFoundException e)
+                                {
+                                    Debug.WriteLineVerbose("Found invalid key binding in config", Debug.DebugType.Warning);
+                                }
+                            }
+                            else
+                            {
+                                FieldInfo field = fields.First(f => f.Name == line[0]);
+
+                                if (field != null)
+                                {
+                                    var value = Cast(line[3], field.GetType());
+                                }
                             }
                         }
                     }
@@ -125,6 +144,27 @@ namespace Strike2D
                 // Save using default settings
                 SaveConfig();
             }
+        }
+
+        /// <summary>
+        /// Allows dynamic casting
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        private static dynamic Cast(dynamic obj, Type type)
+        {
+            object value = null;
+            try
+            {
+                value = Convert.ChangeType(obj, type);
+            }
+            catch (InvalidCastException e)
+            {
+                Debug.WriteLineVerbose("Unable to cast value to target type", Debug.DebugType.Warning);
+                value = null;
+            }
+            return value;
         }
     }
 
