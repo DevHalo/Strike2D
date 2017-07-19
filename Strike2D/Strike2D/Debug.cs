@@ -61,7 +61,7 @@ namespace Strike2D
         /// </summary>
         public static void DumpLog()
         {
-            Console.WriteLine("Dumping log to file...");
+            WriteLineVerbose("Dumping log to file...");
             StreamWriter writer = File.CreateText("consolelog.txt");
 
             foreach (DebugLine line in Log)
@@ -70,7 +70,7 @@ namespace Strike2D
             }
             
             writer.Close();
-            Console.WriteLine("Dump written to consolelog.txt");
+            WriteLineVerbose("Dump written to consolelog.txt");
         }
     }
 

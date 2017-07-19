@@ -63,11 +63,11 @@ namespace Strike2D
             try
             {
                 File.Delete("settings.cfg");
-                Console.WriteLine("Settings cleared.");
+                Debug.WriteLineVerbose("Settings cleared.");
             }
             catch (FileNotFoundException e)
             {
-                Console.WriteLine("Settings not found.");
+                Debug.WriteLineVerbose("Settings not found.", Debug.DebugType.Warning);
             }
             finally
             {
