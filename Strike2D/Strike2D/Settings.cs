@@ -161,10 +161,7 @@ namespace Strike2D
         private static dynamic Cast(dynamic obj, Type type)
         {
             object value = null;
-            try
-            {
-                value = Convert.ChangeType(obj, type);
-            }
+            try { value = Convert.ChangeType(obj, type); }
             catch (InvalidCastException e)
             {
                 Debug.WriteLineVerbose("Unable to cast value to target type", Debug.DebugType.Warning);
