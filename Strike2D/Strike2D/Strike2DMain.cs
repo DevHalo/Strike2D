@@ -43,6 +43,8 @@ namespace Strike2D
             Window.Position = new Point(
                 graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width / 2 - graphics.PreferredBackBufferWidth / 2,
                 graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height / 2 - graphics.PreferredBackBufferHeight / 2);
+            
+            graphics.ApplyChanges();
         }
 
         protected override void UnloadContent()
