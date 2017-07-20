@@ -113,7 +113,7 @@ namespace Strike2D
                             string key = line[0];
 
                             // If the key-value pair is a keybind
-                            if (Enum.IsDefined(typeof(Keys), line[2]))
+                            if (Enum.IsDefined(typeof(Keys), line[2]) && settings.KeySettings.Map.ContainsKey(line[0]))
                             {
                                 try
                                 {
