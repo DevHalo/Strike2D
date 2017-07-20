@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using Microsoft.Xna.Framework.Input;
 
@@ -10,24 +11,26 @@ namespace Strike2D
 {
     public static class Settings
     {
+        private const string SETTINGS_FILE_NAME = "settings.cfg";
+
         #region GRAPHICS
-        
-        public static int ScreenX         
+
+        public static int ScreenX
         {
             get { return settings.ScreenX; }
             private set { settings.ScreenY = value <= 0 ? 1 : value; }
         }
-        
-        public static int ScreenY         
+
+        public static int ScreenY
         {
             get { return settings.ScreenY; }
             private set { settings.ScreenY = value <= 0 ? 1 : value; }
         }
-        
+
         #endregion
-        
+
         #region AUDIO
-        
+
         public static int MasterVolume
         {
             get { return settings.MasterVolume; }
@@ -36,16 +39,16 @@ namespace Strike2D
 
         public static int MusicVolume
         {
-            get { return settings.MusicVolume; } 
+            get { return settings.MusicVolume; }
             private set { settings.MusicVolume = Math.Min(Math.Max(100, value), value); }
         }
-        
-        public static int EffectVolume        
+
+        public static int EffectVolume
         {
-            get { return settings.EffectVolume; } 
+            get { return settings.EffectVolume; }
             private set { settings.EffectVolume = Math.Min(Math.Max(100, value), value); }
         }
-        
+
         #endregion
 
         private static SerializableSettings settings = new SerializableSettings();
@@ -58,31 +61,35 @@ namespace Strike2D
             try
             {
                 File.Delete("settings.cfg");
-                Console.WriteLine("Settings cleared.");
+                Debug.WriteLineVerbose("Settings cleared.");
             }
             catch (FileNotFoundException e)
             {
-                Console.WriteLine("Settings not found. Creating one.");
+                Debug.WriteLineVerbose("Settings not found.", Debug.DebugType.Warning);
             }
             finally
             {
+                Console.Write("Creating Settings File...");
                 writer = File.CreateText("settings.cfg");
 
                 foreach (FieldInfo field in fields)
                 {
                     switch (field.Name)
                     {
-                            case "Map":
-                                foreach (string value in settings.KeySettings.Map.Keys)
-                                {
-                                    writer.WriteLine(value + " = " + settings.KeySettings.Map[value]);
-                                }
-                                break;
-                            default:
-                                writer.WriteLine(field.Name + " = " + field.GetValue(settings));
-                                break;
+                        case "KeySettings":
+                            foreach (string value in settings.KeySettings.Map.Keys)
+                            {
+                                writer.WriteLine(value + " = " + settings.KeySettings.Map[value]);
+                            }
+                            break;
+                        default:
+                            writer.WriteLine(field.Name + " = " + field.GetValue(settings));
+                            break;
                     }
                 }
+
+                writer.Close();
+                Console.Write(" Done. \n");
             }
         }
 
@@ -90,13 +97,80 @@ namespace Strike2D
         {
             if (File.Exists("settings.cfg"))
             {
-                
+                FieldInfo[] fields = settings.GetType().GetFields();
+
+                StreamReader reader = File.OpenText("settings.cfg");
+
+                while (!reader.EndOfStream)
+                {
+                    string[] line = reader.ReadLine().Split(' ');
+
+                    // Should be "key = value"
+                    if (line.Length == 3)
+                    {
+                        if (line[1] == "=")
+                        {
+                            string key = line[0];
+
+                            // If the key-value pair is a keybind
+                            if (Enum.IsDefined(typeof(Keys), line[2]))
+                            {
+                                try
+                                {
+                                    settings.KeySettings.ModifyKey(line[0],
+                                        (Keys) Enum.Parse(typeof(Keys), line[2], false));
+                                    Debug.WriteLineVerbose("Key binding for \"" + line[0] + "\" with Keys." + line[2]);
+                                }
+                                catch (KeyNotFoundException e)
+                                {
+                                    Debug.WriteLineVerbose("Key " + "\"" + line[2] + "\"" + " is not a valid keybind",
+                                        Debug.DebugType.Warning);
+                                }
+                            }
+                            else
+                            {
+                                FieldInfo field = fields.First(f => f.Name == line[0]);
+
+                                if (field != null)
+                                {
+                                    var value = Cast(line[2], field.FieldType);
+
+                                    Debug.WriteLineVerbose("Writing to " + field.Name + " with value " +
+                                                           value.ToString());
+
+                                    field.SetValue(settings, value);
+                                }
+                            }
+                        }
+                    }
+                }
             }
             else
             {
                 // Save using default settings
                 SaveConfig();
             }
+        }
+
+        /// <summary>
+        /// Allows dynamic casting
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        private static dynamic Cast(dynamic obj, Type type)
+        {
+            object value = null;
+            try
+            {
+                value = Convert.ChangeType(obj, type);
+            }
+            catch (InvalidCastException e)
+            {
+                Debug.WriteLineVerbose("Unable to cast value to target type", Debug.DebugType.Warning);
+                value = null;
+            }
+            return value;
         }
     }
 
@@ -137,7 +211,7 @@ namespace Strike2D
                 {"switchKnife", Keys.D3},
                 {"switchGrenade", Keys.D4},
                 {"switchBomb", Keys.D5},
-                
+
                 // UI
                 {"talkAll", Keys.Y},
                 {"talkTeam", Keys.U},
