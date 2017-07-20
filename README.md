@@ -6,4 +6,4 @@ Installation Instructions:
 - Build using Visual Studio or Rider. 
 (As of this commit Rider was the IDE of choice)
 
-Last Modified: July 18th 2017
+Last Modified: July 19th 2017
