@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Win32;
 using Microsoft.Xna.Framework.Input;
 
 namespace Strike2D
@@ -25,6 +26,24 @@ namespace Strike2D
         {
             get { return settings.ScreenY; }
             private set { settings.ScreenY = value <= 0 ? 1 : value; }
+        }
+
+        public enum ScreenMode
+        {
+            Windowed,
+            FullScreenWindowed,
+            FullScreen
+        }
+
+        public static ScreenMode Mode
+        {
+            get { return settings.Mode; }
+            private set { settings.Mode = value; }
+        }
+
+        public static void ChangeWindowType(ScreenMode mode)
+        {
+            
         }
 
         #endregion
@@ -133,6 +152,19 @@ namespace Strike2D
 
                                 if (field != null)
                                 {
+                                    // If the field is a enum
+                                    if (field.FieldType == typeof(Enum))
+                                    {
+                                        try
+                                        {
+
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            Console.WriteLine();
+                                            throw;
+                                        }
+                                    }
                                     var value = Cast(line[2], field.FieldType);
 
                                     Debug.WriteLineVerbose("Writing to " + field.Name + " with value " +
@@ -179,11 +211,13 @@ namespace Strike2D
         public int ScreenX = 1366;
         public int ScreenY = 768;
 
+        public Settings.ScreenMode Mode = Settings.ScreenMode.Windowed;
+
         public int MasterVolume = 100;
         public int MusicVolume = 100;
         public int EffectVolume = 100;
         public int VoiceVolume = 100;
-
+        
         public KeyMapSettings KeySettings = new KeyMapSettings();
     }
 
