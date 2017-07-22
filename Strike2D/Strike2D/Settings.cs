@@ -125,56 +125,50 @@ namespace Strike2D
                     string[] line = reader.ReadLine().Split(' ');
 
                     // Should be "key = value"
-                    if (line.Length == 3)
-                    {
-                        if (line[1] == "=")
-                        {
-                            string key = line[0];
+                    if (line.Length != 3) continue;
+                    if (line[1] != "=") continue;
 
+                    FieldInfo field = fields.First(f => f.Name == line[0]);
+
+                    // If the setting in the file doesn't exist as a real setting
+                    if (field == null) continue;
+                    
+                    // If the field is a enum
+                    if (field.FieldType == typeof(Enum))
+                    {
+                        try
+                        {
                             // If the key-value pair is a keybind
-                            if (Enum.IsDefined(typeof(Keys), line[2]) && settings.KeySettings.Map.ContainsKey(line[0]))
+                            if (Enum.IsDefined(typeof(Keys), line[2]) &&
+                                settings.KeySettings.Map.ContainsKey(line[0]))
                             {
                                 try
                                 {
                                     settings.KeySettings.ModifyKey(line[0],
                                         (Keys) Enum.Parse(typeof(Keys), line[2], false));
-                                    Debug.WriteLineVerbose("Key binding for \"" + line[0] + "\" with Keys." + line[2]);
+                                    Debug.WriteLineVerbose(
+                                        "Key binding for \"" + line[0] + "\" with Keys." + line[2]);
                                 }
                                 catch (KeyNotFoundException e)
                                 {
-                                    Debug.WriteLineVerbose("Key " + "\"" + line[2] + "\"" + " is not a valid keybind",
+                                    Debug.WriteLineVerbose(
+                                        "Key " + "\"" + line[2] + "\"" + " is not a valid keybind",
                                         Debug.DebugType.Warning);
                                 }
                             }
-                            else
-                            {
-                                FieldInfo field = fields.First(f => f.Name == line[0]);
-
-                                if (field != null)
-                                {
-                                    // If the field is a enum
-                                    if (field.FieldType == typeof(Enum))
-                                    {
-                                        try
-                                        {
-
-                                        }
-                                        catch (Exception e)
-                                        {
-                                            Console.WriteLine();
-                                            throw;
-                                        }
-                                    }
-                                    var value = Cast(line[2], field.FieldType);
-
-                                    Debug.WriteLineVerbose("Writing to " + field.Name + " with value " +
-                                                           value.ToString());
-
-                                    field.SetValue(settings, value);
-                                }
-                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine();
+                            throw;
                         }
                     }
+                    var value = Cast(line[2], field.FieldType);
+
+                    Debug.WriteLineVerbose("Writing to " + field.Name + " with value " +
+                                           value.ToString());
+
+                    field.SetValue(settings, value);
                 }
             }
             else
@@ -250,7 +244,10 @@ namespace Strike2D
                 {"scoreboard", Keys.Tab},
                 {"buy", Keys.B},
                 {"buyOther", Keys.O},
-                {"noclip", Keys.V}
+                {"noclip", Keys.V},
+                
+                // Misc
+                {"spray", Keys.T}
             };
         }
 
