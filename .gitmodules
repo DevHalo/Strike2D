@@ -1,0 +1,3 @@
+[submodule "libs/lidgren-network-gen3"]
+	path = libs/lidgren-network-gen3
+	url = https://github.com/lidgren/lidgren-network-gen3.git
