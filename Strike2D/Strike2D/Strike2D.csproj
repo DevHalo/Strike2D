@@ -35,6 +35,7 @@
   <ItemGroup>
     <Reference Include="Lidgren.Network, Version=2012.1.7.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\..\libs\lidgren-network-gen3\Lidgren.Network\bin\Release\Lidgren.Network.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="MonoGame.Framework, Version=3.6.0.1625, Culture=neutral, PublicKeyToken=null">
@@ -48,8 +49,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssetManager.cs" />
     <Compile Include="Debug.cs" />
+    <Compile Include="GameEngine.cs" />
+    <Compile Include="IDrawComponent.cs" />
     <Compile Include="Manifest.cs" />
+    <Compile Include="NetworkManager.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Profile.cs" />
     <Compile Include="Program.cs" />
