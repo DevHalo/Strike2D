@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Strike2D
 {
@@ -13,6 +15,8 @@ namespace Strike2D
         
         private bool Loaded() { return loaded; }
         private int LoadedAssets() { return loadedAssets; }
+
+        private ContentManager content;
         
         /// <summary>
         /// Type of loading
@@ -21,6 +25,11 @@ namespace Strike2D
         {
             Core,
             Game
+        }
+
+        public AssetManager(ContentManager content)
+        {
+            this.content = content;
         }
         
         public async void LoadAsync(LoadType loadType)
@@ -48,6 +57,7 @@ namespace Strike2D
                 Dictionary<string, object> assetsToLoad = new Dictionary<string, object>();
 
                 // Assets
+                content.Load<Texture2D>();
 
                 // Bake the list
                 return new SortedDictionary<string, object>(assetsToLoad);
@@ -59,13 +69,14 @@ namespace Strike2D
             return null;
         }
 
-        private Task LoadGameContentAsync()
+        private async Task<SortedDictionary<string, object>> LoadGameContentAsync()
         {
             try
             {
                 Dictionary<string, object> assetsToLoad = new Dictionary<string, object>();
             
                 // Assets
+                
             
                 // Bake the list
                 Assets = new SortedDictionary<string, object>(assetsToLoad);
