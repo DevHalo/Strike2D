@@ -43,6 +43,21 @@ namespace Strike2D
             Window.Position = new Point(
                 graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width / 2 - graphics.PreferredBackBufferWidth / 2,
                 graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height / 2 - graphics.PreferredBackBufferHeight / 2);
+
+
+            switch (Settings.Mode)
+            {
+                case Settings.ScreenMode.Windowed:
+                    break;
+                case Settings.ScreenMode.FullScreenWindowed:
+                    break;
+                case Settings.ScreenMode.FullScreen:
+                    break;
+            }
+            
+            Window.Title = "Strike 2D - " + Manifest.Version + " - " + Manifest.Environment + " Build";
+            
+            graphics.ApplyChanges();
         }
 
         protected override void UnloadContent()

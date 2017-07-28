@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Strike2D
 {
@@ -71,6 +72,15 @@ namespace Strike2D
             
             writer.Close();
             WriteLineVerbose("Dump written to consolelog.txt");
+        }
+
+        /// <summary>
+        /// Prints 
+        /// </summary>
+        /// <param name="sb"></param>
+        public static void DrawDebugInformation(SpriteBatch sb)
+        {
+            
         }
     }
 
