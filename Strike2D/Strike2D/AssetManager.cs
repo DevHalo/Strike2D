@@ -32,32 +32,33 @@ namespace Strike2D
             this.content = content;
         }
         
-        public async void LoadAsync(LoadType loadType)
+        public void LoadAsync(LoadType loadType)
         {
             Assets.Clear();
             
             switch (loadType)
             {
                 case LoadType.Core:
-                    Assets = await LoadCoreContentAsync();
+                    Assets = Task.Run(() => LoadCoreContentAsync()).Result;
                     break;
                 case LoadType.Game:
-                    Assets = await LoadGameContentAsync();
+                    Assets = Task.Run(() => LoadGameContentAsync()).Result;
                     break;
             }
+
+            loaded = true;
         }
 
         /// <summary>
         /// Loads the basic assets into the game (UI, Menu Sounds)
         /// </summary>
-        private async Task<SortedDictionary<string, object>> LoadCoreContentAsync()
+            private SortedDictionary<string, object> LoadCoreContentAsync()
         {
             try
             {
                 Dictionary<string, object> assetsToLoad = new Dictionary<string, object>();
 
                 // Assets
-                content.Load<Texture2D>();
 
                 // Bake the list
                 return new SortedDictionary<string, object>(assetsToLoad);
@@ -69,7 +70,7 @@ namespace Strike2D
             return null;
         }
 
-        private async Task<SortedDictionary<string, object>> LoadGameContentAsync()
+        private SortedDictionary<string, object> LoadGameContentAsync()
         {
             try
             {
