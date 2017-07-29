@@ -8,7 +8,7 @@ namespace Strike2D
         static void Main()
         {
             Console.WriteLine("Strike2D - " + Manifest.Version + " - " + Manifest.Environment + " -");
-            using (var game = new Strike2DMain())
+            using (var game = new Strike2D())
                 game.Run();
         }
     }

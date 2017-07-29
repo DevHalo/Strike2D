@@ -9,7 +9,7 @@ namespace Strike2D
         public bool Active { get; protected set; }
         public bool Render { get; protected set; }
         
-        public abstract void Update(SpriteBatch sb);
+        public abstract void Update(float gameTime);
         public abstract void Draw(SpriteBatch sb);
     }
 }

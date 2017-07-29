@@ -32,6 +32,10 @@ namespace Strike2D
             this.content = content;
         }
         
+        /// <summary>
+        /// Loads assets into the game on a separate thread
+        /// </summary>
+        /// <param name="loadType"></param>
         public void LoadAsync(LoadType loadType)
         {
             Assets.Clear();
@@ -46,13 +50,15 @@ namespace Strike2D
                     break;
             }
 
-            loaded = true;
+            loaded = Assets != null;
+         
+            if (!loaded) { Debug.WriteLine("FAILED TO LOAD", Debug.DebugType.CriticalError); }
         }
 
         /// <summary>
         /// Loads the basic assets into the game (UI, Menu Sounds)
         /// </summary>
-            private SortedDictionary<string, object> LoadCoreContentAsync()
+        private SortedDictionary<string, object> LoadCoreContentAsync()
         {
             try
             {
@@ -80,12 +86,13 @@ namespace Strike2D
                 
             
                 // Bake the list
-                Assets = new SortedDictionary<string, object>(assetsToLoad);
+                return new SortedDictionary<string, object>(assetsToLoad);
             }
             catch (Exception e)
             {
                 Debug.WriteLine("FAILED TO LOAD", Debug.DebugType.CriticalError);
             }
+            return null;
         }
     }
 }

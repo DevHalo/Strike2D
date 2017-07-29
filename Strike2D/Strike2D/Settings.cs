@@ -164,13 +164,17 @@ namespace Strike2D
                     if (line.Length != 3) continue;
                     if (line[1] != "=") continue;
 
-                    FieldInfo field = fields.First(f => f.Name == line[0]);
-
                     // If the setting in the file doesn't exist as a real setting
-                    if (field == null) continue;
+                    if (fields.All(f => f.Name != line[0]))
+                    {
+                        Debug.WriteLine("Skipping \"" + line[0] + "\"", Debug.DebugType.Warning);
+                        continue;
+                    }
+                    
+                    FieldInfo field = fields.First(f => f.Name == line[0]);
                     
                     // If the field is a enum
-                    if (field.FieldType == typeof(Enum))
+                    if (field.FieldType.IsEnum)
                     {
                         try
                         {
@@ -192,10 +196,18 @@ namespace Strike2D
                                         Debug.DebugType.Warning);
                                 }
                             }
+                            else if (Enum.IsDefined(field.FieldType, line[2]))
+                            {
+                                field.SetValue(settings, Enum.Parse(field.FieldType, line[2]));
+                                Debug.WriteLineVerbose("Setting Enum \"" + field.FieldType + "\"" 
+                                                       + " to \"" + line[2] + "\"");
+                                continue;
+                            }
                         }
                         catch (Exception e)
                         {
-                            Debug.WriteLineVerbose("Failed to set value to setting \"" + field.Name + "\"", Debug.DebugType.Warning);
+                            Debug.WriteLineVerbose("Failed to set value to setting \"" + field.Name + "\"",
+                                Debug.DebugType.Warning);
                             throw;
                         }
                     }
@@ -208,6 +220,9 @@ namespace Strike2D
                 }
                 
                 reader.Close();
+                
+                // Resave the config file to account for any missing settings
+                SaveConfig();
             }
             else
             {
@@ -305,7 +320,8 @@ namespace Strike2D
             }
             else
             {
-                Debug.WriteLineVerbose("Attempted to write command \"" + key + "\" which doesn't exist.", Debug.DebugType.Warning);
+                Debug.WriteLineVerbose("Attempted to write command \"" + key + "\" which doesn't exist.",
+                    Debug.DebugType.Warning);
             }
         }
     }
