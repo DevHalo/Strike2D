@@ -92,9 +92,9 @@ namespace Strike2D
         public readonly string Message;
         public readonly Debug.DebugType Type;
 
-        public DebugLine(string messsage, Debug.DebugType debugType = Debug.DebugType.Logging)
+        public DebugLine(string message, Debug.DebugType debugType = Debug.DebugType.Logging)
         {
-            Message = Message;
+            Message = message;
             Type = debugType;
         }
     }

@@ -47,12 +47,15 @@ namespace Strike2D
             switch (Settings.Mode)
             {
                 case Settings.ScreenMode.FullScreenWindowed:
+                    // temp fix until #5585 is pushed
+                    /*
                     graphics.PreferredBackBufferWidth = Screen.PrimaryScreen.WorkingArea.Width;
                     graphics.PreferredBackBufferHeight = Screen.PrimaryScreen.WorkingArea.Height;
                     Window.IsBorderless = true;
                     Window.Position = Point.Zero;
-                    break;
+                    */
                 case Settings.ScreenMode.FullScreen:
+                    graphics.HardwareModeSwitch = false;
                     graphics.ToggleFullScreen();
                     break;
             }

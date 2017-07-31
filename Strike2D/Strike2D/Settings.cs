@@ -121,7 +121,7 @@ namespace Strike2D
             }
             finally
             {
-                Console.Write("Creating Settings File...");
+                Debug.WriteLineVerbose("Creating Settings File...");
                 writer = File.CreateText(SETTINGS_FILE_NAME);
 
                 foreach (FieldInfo field in fields)
@@ -141,7 +141,7 @@ namespace Strike2D
                 }
 
                 writer.Close();
-                Console.Write(" Done. \n");
+                Debug.WriteLineVerbose("Done.");
             }
         }
 

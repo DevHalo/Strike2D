@@ -22,7 +22,7 @@ namespace Strike2D
         {
             input = new InputManager();
             assets = new AssetManager(main.Content);
-            Debug.WriteLine("Good to Go");
+            Debug.WriteLineVerbose("Ready to Go. Welcome to Strike 2D " + Manifest.Version);
         }
 
 
@@ -35,8 +35,7 @@ namespace Strike2D
 
         public void Draw(SpriteBatch sb)
         {
-
+            
         }
-
     }
 }
