@@ -22,6 +22,7 @@ namespace Strike2D
         {
             input = new InputManager();
             assets = new AssetManager(main.Content);
+            assets.Load(AssetManager.LoadType.Core);
             Debug.WriteLineVerbose("Ready to Go. Welcome to Strike 2D " + Manifest.Version);
         }
 

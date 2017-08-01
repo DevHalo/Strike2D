@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -36,63 +37,67 @@ namespace Strike2D
         /// Loads assets into the game on a separate thread
         /// </summary>
         /// <param name="loadType"></param>
-        public void LoadAsync(LoadType loadType)
+        public void Load(LoadType loadType)
         {
-            Assets.Clear();
+            loaded = false;
+            Assets = new SortedDictionary<string, object>();
+            
+            Debug.WriteLineVerbose("Loading Assets");
             
             switch (loadType)
             {
                 case LoadType.Core:
-                    Assets = Task.Run(() => LoadCoreContentAsync()).Result;
+                    Thread bgLoad = new Thread(LoadCoreContent);
+                    bgLoad.IsBackground = true;
+                    bgLoad.Start();
                     break;
                 case LoadType.Game:
-                    Assets = Task.Run(() => LoadGameContentAsync()).Result;
+                    LoadGameContent();
                     break;
             }
 
-            loaded = Assets != null;
-         
             if (!loaded) { Debug.WriteLine("FAILED TO LOAD", Debug.DebugType.CriticalError); }
         }
 
         /// <summary>
         /// Loads the basic assets into the game (UI, Menu Sounds)
         /// </summary>
-        private SortedDictionary<string, object> LoadCoreContentAsync()
+        private void LoadCoreContent()
         {
             try
             {
                 Dictionary<string, object> assetsToLoad = new Dictionary<string, object>();
 
                 // Assets
+                Thread.Sleep(1000);
+                Debug.WriteLineVerbose("Loaded Asset 1");
+                Thread.Sleep(2000);
+                Debug.WriteLineVerbose("Loaded Asset 2");
 
                 // Bake the list
-                return new SortedDictionary<string, object>(assetsToLoad);
+                Assets = new SortedDictionary<string, object>(assetsToLoad);
+                loaded = true;
             }
             catch (Exception e)
             {
                 Debug.WriteLine("FAILED TO LOAD", Debug.DebugType.CriticalError);
             }
-            return null;
         }
 
-        private SortedDictionary<string, object> LoadGameContentAsync()
+        private void LoadGameContent()
         {
             try
             {
                 Dictionary<string, object> assetsToLoad = new Dictionary<string, object>();
             
                 // Assets
-                
             
                 // Bake the list
-                return new SortedDictionary<string, object>(assetsToLoad);
             }
             catch (Exception e)
             {
                 Debug.WriteLine("FAILED TO LOAD", Debug.DebugType.CriticalError);
             }
-            return null;
         }
     }
 }
