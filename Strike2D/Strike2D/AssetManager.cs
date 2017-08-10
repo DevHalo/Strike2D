@@ -76,7 +76,7 @@ namespace Strike2D
                 Dictionary<string, object> assetsToLoad = new Dictionary<string, object>();
 
                 // Assets
-                assetsToLoad.Add("t-background", Load<Texture2D>("Materials/Background/t-background"));
+                assetsToLoad.Add("t_background", Load<Texture2D>("Materials/Background/t_background.png"));
                 
                 // Bake the list
                 Assets = new SortedDictionary<string, object>(assetsToLoad);
@@ -132,7 +132,7 @@ namespace Strike2D
             Type t = typeof(T);
             object result = null;
             
-            Debug.WriteLineVerbose("Loading " + fileName + " type of " + t, Debug.DebugType.Logging);
+            Debug.WriteLineVerbose("Loading " + fileName + " type of " + t);
 
             if (!File.Exists(RootDirectory + fileName))
             {
@@ -150,13 +150,15 @@ namespace Strike2D
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLineVerbose("Failed to load Texture2D \"" + fileName + "\"", Debug.DebugType.CriticalError);
+                    Debug.WriteLineVerbose("Failed to load Texture2D \"" + fileName + "\"",
+                        Debug.DebugType.CriticalError);
                 }
             }
 
             if (result == null)
             {
-                Debug.WriteLineVerbose("Failed to load asset \"" + fileName + "\"" + "!", Debug.DebugType.CriticalError);
+                Debug.WriteLineVerbose("Failed to load asset \"" + fileName + "\"" + "!", 
+                    Debug.DebugType.CriticalError);
             }
             return result;
         }

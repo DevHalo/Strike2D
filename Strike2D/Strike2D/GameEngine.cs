@@ -43,7 +43,6 @@ namespace Strike2D
         {
             input = new InputManager();
             assets = new AssetManager(main);
-            assets.Load(AssetManager.LoadType.Core);
             Debug.WriteLineVerbose("Ready to Go. Welcome to Strike 2D " + Manifest.Version);
             CurState = State.Splash;
         }
@@ -71,7 +70,6 @@ namespace Strike2D
                 case State.Connecting:
                     break;
             }
-            
             
             input.Tock();
         }
