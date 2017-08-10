@@ -62,6 +62,7 @@
     <Compile Include="InputManager.cs" />
     <Compile Include="InterfaceObject.cs" />
     <Compile Include="Manifest.cs" />
+    <Compile Include="MenuManager.cs" />
     <Compile Include="NetworkManager.cs" />
     <Compile Include="Panel.cs" />
     <Compile Include="Player.cs" />
