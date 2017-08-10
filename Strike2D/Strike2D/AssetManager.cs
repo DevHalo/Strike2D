@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,10 +15,14 @@ namespace Strike2D
         private volatile bool loaded = false;
         private volatile int loadedAssets = 0;
         
-        private bool Loaded() { return loaded; }
-        private int LoadedAssets() { return loadedAssets; }
+        public bool Loaded() { return loaded; }
+        public int LoadedAssets() { return loadedAssets; }
 
-        private ContentManager content;
+        public static string RootDirectory = "Content/";
+
+        private Strike2D main;
+        
+        public LoadType LoadedType { get; private set; } = LoadType.Unloaded;
         
         /// <summary>
         /// Type of loading
@@ -25,12 +30,13 @@ namespace Strike2D
         public enum LoadType
         {
             Core,
-            Game
+            Game,
+            Unloaded
         }
 
-        public AssetManager(ContentManager content)
+        public AssetManager(Strike2D main)
         {
-            this.content = content;
+            this.main = main;
         }
         
         /// <summary>
@@ -57,6 +63,7 @@ namespace Strike2D
             }
 
             if (!loaded) { Debug.WriteLine("FAILED TO LOAD", Debug.DebugType.CriticalError); }
+            LoadedType = loaded ? loadType : LoadType.Unloaded;
         }
 
         /// <summary>
@@ -69,11 +76,8 @@ namespace Strike2D
                 Dictionary<string, object> assetsToLoad = new Dictionary<string, object>();
 
                 // Assets
-                Thread.Sleep(1000);
-                Debug.WriteLineVerbose("Loaded Asset 1");
-                Thread.Sleep(2000);
-                Debug.WriteLineVerbose("Loaded Asset 2");
-
+                assetsToLoad.Add("t-background", Load<Texture2D>("Materials/Background/t-background"));
+                
                 // Bake the list
                 Assets = new SortedDictionary<string, object>(assetsToLoad);
                 loaded = true;
@@ -84,6 +88,9 @@ namespace Strike2D
             }
         }
 
+        /// <summary>
+        /// Loads game assets such as sprites and sounds
+        /// </summary>
         private void LoadGameContent()
         {
             try
@@ -91,13 +98,67 @@ namespace Strike2D
                 Dictionary<string, object> assetsToLoad = new Dictionary<string, object>();
             
                 // Assets
-            
+
                 // Bake the list
             }
             catch (Exception e)
             {
                 Debug.WriteLine("FAILED TO LOAD", Debug.DebugType.CriticalError);
             }
+        }
+
+        /// <summary>
+        /// Loads a map from the maps directory
+        /// </summary>
+        /// <param name="mapName"> the name of the map</param>
+        /// <param name="downloaded"> Was this map downloaded from a server</param>
+        public void LoadMap(string mapName, bool downloaded)
+        {
+            // If the maps folder doesn't exist, make one
+            if (!File.Exists(RootDirectory + "Maps"))
+            {
+                
+            }
+        }
+
+        /// <summary>
+        /// Loads a type from the RootDirectory folder
+        /// </summary>
+        /// <param name="fileName"> Filename including extension. Structure is relative to RootDirectory</param>
+        /// <typeparam name="T"> Type you want to load</typeparam>
+        /// <returns></returns>
+        private object Load<T>(string fileName)
+        {
+            Type t = typeof(T);
+            object result = null;
+            
+            Debug.WriteLineVerbose("Loading " + fileName + " type of " + t, Debug.DebugType.Logging);
+
+            if (!File.Exists(RootDirectory + fileName))
+            {
+                Debug.WriteLineVerbose("File \"" + fileName + " does not exist!", Debug.DebugType.CriticalError);
+                return default(T);
+            }
+            
+            if (t == typeof(Texture2D))
+            {
+                try
+                {
+                    FileStream fileStream = new FileStream(RootDirectory + fileName, FileMode.Open);
+                    result = Texture2D.FromStream(main.GraphicsDevice, fileStream);
+                    fileStream.Dispose();
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLineVerbose("Failed to load Texture2D \"" + fileName + "\"", Debug.DebugType.CriticalError);
+                }
+            }
+
+            if (result == null)
+            {
+                Debug.WriteLineVerbose("Failed to load asset \"" + fileName + "\"" + "!", Debug.DebugType.CriticalError);
+            }
+            return result;
         }
     }
 }
