@@ -1,5 +1,6 @@
 ﻿// Handles all game state and flow
 
+using System;
 using System.Runtime.InteropServices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -9,7 +10,7 @@ namespace Strike2D
     public class GameEngine
     {
         private InputManager input;        // Handles Input
-        private AssetManager assets;       // Handles asset loading and unloading
+        private static AssetManager assets;       // Handles asset loading and unloading
         
         public enum State
         {
@@ -81,6 +82,22 @@ namespace Strike2D
         public void Draw(SpriteBatch sb)
         {
             
+        }
+
+        public static object GetAsset(string key)
+        {
+            if (assets != null)
+            {
+                if (assets.Assets.ContainsKey(key))
+                {
+                    return assets.Assets[key];
+                }
+            }
+            
+            Debug.WriteLineVerbose("Attempting to access asset when the asset manager has not been initialized!",
+                Debug.DebugType.CriticalError);
+            
+            return null;
         }
     }
 }
