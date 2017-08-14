@@ -20,3 +20,12 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+
+"CS:GO Main Theme (KAiROS Trap Remix) (FREE DL)"
+
+© 2016 by Frederic Ward / KAiROS. This work is licensed under a Creative Commons
+Attribution-NonCommercial-Share Alike 4.0 International License (creativecommons.org/licenses/by-nc-sa/4.0).
+
+KAiROS Youtube Channel:
+https://www.youtube.com/channel/UCMLjgbv7xPfy4zs1A_5Csmg
