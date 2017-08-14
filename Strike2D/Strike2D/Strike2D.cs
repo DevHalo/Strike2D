@@ -1,30 +1,28 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Windows.Forms;
+using Microsoft.SqlServer.Server;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace Strike2D
 {
-    public class Strike2DMain : Game
+    public class Strike2D : Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        public Strike2DMain()
+        private GameEngine engine;
+
+        public Strike2D()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-
-        }
-
-        protected override void Initialize()
-        {
-            base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            spriteBatch = new SpriteBatch(GraphicsDevice);
             LoadBase();
+            spriteBatch = new SpriteBatch(GraphicsDevice);
         }
         
         /// <summary>
@@ -47,17 +45,26 @@ namespace Strike2D
 
             switch (Settings.Mode)
             {
-                case Settings.ScreenMode.Windowed:
-                    break;
                 case Settings.ScreenMode.FullScreenWindowed:
-                    break;
+                    // temp fix until #5585 is pushed
+                    /*
+                    graphics.PreferredBackBufferWidth = Screen.PrimaryScreen.WorkingArea.Width;
+                    graphics.PreferredBackBufferHeight = Screen.PrimaryScreen.WorkingArea.Height;
+                    Window.IsBorderless = true;
+                    Window.Position = Point.Zero;
+                    */
                 case Settings.ScreenMode.FullScreen:
+                    graphics.HardwareModeSwitch = false;
+                    graphics.ToggleFullScreen();
                     break;
             }
             
             Window.Title = "Strike 2D - " + Manifest.Version + " - " + Manifest.Environment + " Build";
             
             graphics.ApplyChanges();
+            
+            engine = new GameEngine();
+            engine.Init(this);
         }
 
         protected override void UnloadContent()
@@ -66,16 +73,18 @@ namespace Strike2D
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == 
-                ButtonState.Pressed || Keyboard.GetState().IsKeyDown(
-                    Keys.Escape))
-                Exit();
+            float time = gameTime.ElapsedGameTime.Milliseconds / 1000f;
+            engine.Update(time);
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
+            if (IsActive)
+            {
+                engine.Draw(spriteBatch);
+            }
             base.Draw(gameTime);
         }
     }

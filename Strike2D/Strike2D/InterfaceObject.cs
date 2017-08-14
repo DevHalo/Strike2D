@@ -7,7 +7,7 @@ namespace Strike2D
     {
         
         
-        public override void Update(SpriteBatch sb)
+        public override void Update(float gameTime)
         {
         }
 

@@ -2,7 +2,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Windows.Forms;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Strike2D
@@ -82,6 +84,16 @@ namespace Strike2D
         {
             
         }
+
+        /// <summary>
+        /// Displays an error box in the event of an exception
+        /// </summary>
+        /// <param name="exception"></param>
+        public static void ThrowException(Exception exception)
+        {
+            MessageBox.Show(exception.Message + "\n\n" + Environment.StackTrace, "Strike2D.exe ripped",
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
     }
 
     /// <summary>
@@ -92,9 +104,9 @@ namespace Strike2D
         public readonly string Message;
         public readonly Debug.DebugType Type;
 
-        public DebugLine(string messsage, Debug.DebugType debugType = Debug.DebugType.Logging)
+        public DebugLine(string message, Debug.DebugType debugType = Debug.DebugType.Logging)
         {
-            Message = Message;
+            Message = message;
             Type = debugType;
         }
     }
