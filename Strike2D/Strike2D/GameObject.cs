@@ -5,10 +5,10 @@ namespace Strike2D
 {
     public abstract class GameObject
     {
-        public Vector2 Position { get; protected set; }
+        public Vector2 Position { get; set; }
         public Rectangle Bounds { get; protected set; }
-        public bool Active { get; protected set; }
-        public bool Render { get; protected set; }
+        public bool Active { get; protected set; } = true;
+        public bool Render { get; protected set; } = true;
 
         /// <summary>
         /// Returns the position of the game object as a point

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 namespace Strike2D
@@ -18,20 +19,12 @@ namespace Strike2D
         /// <summary>
         /// The horizontal size of the window in pixels
         /// </summary>
-        public static int ScreenX
-        {
-            get { return settings.ScreenX; }
-            private set { settings.ScreenY = value <= 0 ? 1 : value; }
-        }
+        public static int ScreenX => settings.ScreenX;
 
         /// <summary>
         /// The vertical size of the window in pixels
         /// </summary>
-        public static int ScreenY
-        {
-            get { return settings.ScreenY; }
-            private set { settings.ScreenY = value <= 0 ? 1 : value; }
-        }
+        public static int ScreenY => settings.ScreenY;
 
         public enum ScreenMode
         {
@@ -58,6 +51,17 @@ namespace Strike2D
             Mode = mode;
         }
 
+        /// <summary>
+        /// Changes the screen resolution
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public static void ChangeResolution(int x, int y)
+        {
+            settings.ScreenX = MathHelper.Clamp(x, 1, 3840);
+            settings.ScreenY = MathHelper.Clamp(y, 1, 2160);
+        }
+        
         #endregion
 
         #region AUDIO

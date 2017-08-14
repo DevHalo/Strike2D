@@ -73,7 +73,8 @@ namespace Strike2D
 
         protected override void Update(GameTime gameTime)
         {
-            engine.Update();
+            float time = gameTime.ElapsedGameTime.Milliseconds / 1000f;
+            engine.Update(time);
             base.Update(gameTime);
         }
 

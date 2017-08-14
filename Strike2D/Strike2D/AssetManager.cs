@@ -1,9 +1,11 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -11,18 +13,21 @@ namespace Strike2D
 {
     public class AssetManager
     {
-        public SortedDictionary<string, object> Assets { get; private set; }
-        private volatile bool loaded = false;
+        public static SortedDictionary<string, object> Assets { get; private set; }
+        
+        private static volatile bool loaded = false;
         private volatile int loadedAssets = 0;
         
-        public bool Loaded() { return loaded; }
+        // Static variables for current loaded state
+        public static LoadType LoadedType { get; private set; } = LoadType.Unloaded;
+        public static bool Loaded() { return loaded && LoadedType != LoadType.Unloaded; }
+        
         public int LoadedAssets() { return loadedAssets; }
 
         public static string RootDirectory = "Content/";
 
         private Strike2D main;
         
-        public LoadType LoadedType { get; private set; } = LoadType.Unloaded;
         
         /// <summary>
         /// Type of loading
@@ -37,6 +42,38 @@ namespace Strike2D
         public AssetManager(Strike2D main)
         {
             this.main = main;
+        }
+        
+        /// <summary>
+        /// Gets the asset from the asset manager using a key
+        /// </summary>
+        /// <param name="key"> String key used to reference the asset</param>
+        /// <returns></returns>
+        public static object GetAsset(string key)
+        {
+            try
+            {
+                if (Loaded())
+                {
+                    if (Assets.ContainsKey(key))
+                    {
+                        return Assets[key];
+                    }
+                }
+                
+                Debug.WriteLineVerbose("Attempting to access asset when the asset manager has not been initialized!",
+                    Debug.DebugType.CriticalError);
+
+                throw new NullReferenceException("\nKey: \"" + key + "\"" + "\nAssets: " +
+                                                 (Assets == null ? "Assets Initialized" : "Not Initialized") + 
+                                                 "\nLoaded State: " + LoadedType);
+            }
+            catch (NullReferenceException e)
+            {
+                // if ibuypower is playing
+                Debug.ThrowException(e);
+                throw;
+            }
         }
         
         /// <summary>
@@ -62,8 +99,6 @@ namespace Strike2D
                     break;
             }
 
-            if (!loaded) { Debug.WriteLine("FAILED TO LOAD", Debug.DebugType.CriticalError); }
-            LoadedType = loaded ? loadType : LoadType.Unloaded;
         }
 
         /// <summary>
@@ -77,14 +112,17 @@ namespace Strike2D
 
                 // Assets
                 assetsToLoad.Add("t_background", Load<Texture2D>("Materials/Background/t_background.png"));
+                assetsToLoad.Add("ct_background", Load<Texture2D>("Materials/Background/ct_background.png"));
                 
                 // Bake the list
                 Assets = new SortedDictionary<string, object>(assetsToLoad);
                 loaded = true;
+                LoadedType = LoadType.Core;
             }
             catch (Exception e)
             {
                 Debug.WriteLine("FAILED TO LOAD", Debug.DebugType.CriticalError);
+                Debug.ThrowException(e);
             }
         }
 
@@ -98,12 +136,14 @@ namespace Strike2D
                 Dictionary<string, object> assetsToLoad = new Dictionary<string, object>();
             
                 // Assets
+                LoadedType = LoadType.Game; 
 
                 // Bake the list
             }
             catch (Exception e)
             {
                 Debug.WriteLine("FAILED TO LOAD", Debug.DebugType.CriticalError);
+                Debug.ThrowException(e);
             }
         }
 
@@ -152,6 +192,8 @@ namespace Strike2D
                 {
                     Debug.WriteLineVerbose("Failed to load Texture2D \"" + fileName + "\"",
                         Debug.DebugType.CriticalError);
+                    
+                    Debug.ThrowException(e);
                 }
             }
 
