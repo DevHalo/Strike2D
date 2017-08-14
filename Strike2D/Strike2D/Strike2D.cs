@@ -11,7 +11,7 @@ namespace Strike2D
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        private GameEngine engine;
+        public GameEngine Engine { get; private set; }
 
         public Strike2D()
         {
@@ -63,27 +63,28 @@ namespace Strike2D
             
             graphics.ApplyChanges();
             
-            engine = new GameEngine();
-            engine.Init(this);
+            Engine = new GameEngine();
+            Engine.Init(this);
         }
 
         protected override void UnloadContent()
         {
+            Engine.Assets.Unload();
         }
 
         protected override void Update(GameTime gameTime)
         {
             float time = gameTime.ElapsedGameTime.Milliseconds / 1000f;
-            engine.Update(time);
+            Engine.Update(time);
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
-            if (IsActive)
+            if (Settings.RenderOffScreen)
             {
-                engine.Draw(spriteBatch);
+                Engine.Draw(spriteBatch);
             }
             base.Draw(gameTime);
         }

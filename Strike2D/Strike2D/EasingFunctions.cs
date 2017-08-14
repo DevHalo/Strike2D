@@ -4,6 +4,7 @@
 // Creation Date: Feburary 10th, 2015
 // Modified Date: Jan 2nd, 2016
 // Description: See Below.
+// Aug 14th 2017: Ported from old xna project
 using System;
 
 namespace LightEngine
@@ -13,7 +14,7 @@ namespace LightEngine
     /// -------------------------------------------------------------------------------------------
     /// Description:  Part of the LightEngine library designed for reusablility and easy
     ///               implementation across multiple applications. This class only contains static
-    ///               functions for various types of animation transisitions.
+    ///               functions for various types of animation transitions.
     /// -------------------------------------------------------------------------------------------
     /// Setup:        All functions require the current time in the animation, a starting point,
     ///               the distance between the destination, and the

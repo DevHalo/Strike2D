@@ -1,7 +1,7 @@
 ﻿// Handles all menu input and drawing
 
-using System;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Strike2D
 {
@@ -9,6 +9,8 @@ namespace Strike2D
     {
         private Sprite[] backgrounds;
         private int selectedBackground;
+        private SoundContainer menuTheme;
+        private GameEngine engine;
         
         public enum MenuState
         {
@@ -19,18 +21,27 @@ namespace Strike2D
             TransitionOut
         }
 
-        public Menu()
+        public Menu(GameEngine instance)
         {
             backgrounds = new[]
             {
-                new Sprite(false, "ct_background"),
-                new Sprite(false, "t_background"), 
+                new Sprite(false, "ct_background", 0.4f),
+                new Sprite(false, "t_background", 0.4f), 
             };
 
             selectedBackground = GameEngine.RandomGenerator.Next(2);
+
+            menuTheme = (SoundContainer)AssetManager.GetAsset("theme");
+
+            engine = instance;
         }
 
         private MenuState menuState = MenuState.TransitionIn;
+
+        public void PlayMenuMusic()
+        {
+            menuTheme.Play(Settings.MusicVolume);
+        }
 
         public void Update(float gameTime)
         {
@@ -60,13 +71,18 @@ namespace Strike2D
                 case MenuState.TransitionOut:
                     break;
             }
+
+            if (engine.Input.Tapped(Keys.Escape))
+            {
+                engine.Exit();
+            }
             
             backgrounds[selectedBackground].Update(gameTime);
         }
 
         public void Draw(SpriteBatch sb)
         {
-            backgrounds[selectedBackground].Draw(sb);
+            backgrounds[selectedBackground].DrawFillScreen(sb);
         }
     }
 }

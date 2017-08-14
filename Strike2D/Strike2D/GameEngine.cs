@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -9,19 +10,33 @@ namespace Strike2D
 {
     public class GameEngine
     {
-        private static InputManager input;                           // Handles Input
-        private static AssetManager assets;                          // Handles asset loading and unloading
+        // Manager Classes
+        private static InputManager input;      // Handles Input
+        private static AssetManager assets;     // Handles asset loading and unloading
+        private static AudioManager audio;      // Handles audio
+
+        // Accessors
+        public InputManager Input => input;
+        public AssetManager Assets => assets;
+        public AudioManager Audio => audio;
+
+        // RNG
         public static Random RandomGenerator { get; private set; }   // Used for random numbers
         
         // GameObjects
         public List<GameObject> UIObjects = new List<GameObject>();
         public List<GameObject> IngameObjects = new List<GameObject>();
         
+        // The current state
         private State curState;
         
         // Screens
         private Menu menuManager;
 
+        /// <summary>
+        /// Returns the center coordinate of the screen
+        /// </summary>
+        /// <returns></returns>
         public static Vector2 Center()
         {
             return new Vector2(Settings.ScreenX / 2f, Settings.ScreenY / 2f);
@@ -49,20 +64,28 @@ namespace Strike2D
             }
         }
 
-        public static InputManager Input => input;
-
         /// <summary>
         /// Run at startup. Initializes all the required manager classes
         /// </summary>
         /// <param name="main"></param>
         public void Init(Strike2D main)
         {
+            audio = new AudioManager();
             input = new InputManager();
             assets = new AssetManager(main);
             Debug.WriteLineVerbose("Ready to Go. Welcome to Strike 2D " + Manifest.Version);
             CurState = State.Splash;
             
             RandomGenerator = new Random();
+            
+        }
+
+        /// <summary>
+        /// Exits the game
+        /// </summary>
+        public void Exit()
+        {
+            Application.Exit();
         }
 
         /// <summary>
@@ -81,7 +104,8 @@ namespace Strike2D
                 case State.Loading:
                     if (AssetManager.Loaded())
                     {
-                        menuManager = new Menu();
+                        menuManager = new Menu(this);
+                        menuManager.PlayMenuMusic();
                         CurState = State.Menu;
                     }
                     break;

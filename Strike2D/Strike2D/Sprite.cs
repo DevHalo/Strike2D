@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography.X509Certificates;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -84,6 +85,22 @@ namespace Strike2D
             if (!Render) { return; }
             
             sb.Draw(sprite, Position, SpriteColour * Alpha);
+        }
+
+        /// <summary>
+        /// Draws the sprite stretched to fill the screen
+        /// </summary>
+        /// <param name="sb"></param>
+        public void DrawFillScreen(SpriteBatch sb)
+        {
+            if (!Render) { return; }
+            
+            float xRatio = (float)Settings.ScreenX / sprite.Width;
+            float yRatio = (float) Settings.ScreenY / sprite.Height;
+            
+            sb.Draw(sprite, Position, null, (SpriteColour * Alpha), 0f, Vector2.Zero, new Vector2(xRatio, yRatio),
+                SpriteEffects.None, 0f);
+            
         }
     }
 }

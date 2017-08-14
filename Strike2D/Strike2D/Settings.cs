@@ -16,6 +16,8 @@ namespace Strike2D
 
         #region GRAPHICS
 
+        public static bool RenderOffScreen => settings.RenderOffScreen;
+
         /// <summary>
         /// The horizontal size of the window in pixels
         /// </summary>
@@ -259,6 +261,8 @@ namespace Strike2D
     /// </summary>
     internal class SerializableSettings
     {
+        public bool RenderOffScreen = true;
+        
         public int ScreenX = 1366;
         public int ScreenY = 768;
 

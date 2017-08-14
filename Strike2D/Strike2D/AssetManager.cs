@@ -28,7 +28,6 @@ namespace Strike2D
 
         private Strike2D main;
         
-        
         /// <summary>
         /// Type of loading
         /// </summary>
@@ -111,8 +110,13 @@ namespace Strike2D
                 Dictionary<string, object> assetsToLoad = new Dictionary<string, object>();
 
                 // Assets
+                
+                // BGs
                 assetsToLoad.Add("t_background", Load<Texture2D>("Materials/Background/t_background.png"));
                 assetsToLoad.Add("ct_background", Load<Texture2D>("Materials/Background/ct_background.png"));
+                
+                // Sound
+                assetsToLoad.Add("theme", Load<SoundContainer>("Sound/Music/theme.mp3"));
                 
                 // Bake the list
                 Assets = new SortedDictionary<string, object>(assetsToLoad);
@@ -167,7 +171,7 @@ namespace Strike2D
         /// <param name="fileName"> Filename including extension. Structure is relative to RootDirectory</param>
         /// <typeparam name="T"> Type you want to load</typeparam>
         /// <returns></returns>
-        private object Load<T>(string fileName)
+        private object Load<T>(string fileName, string key = "")
         {
             Type t = typeof(T);
             object result = null;
@@ -196,6 +200,20 @@ namespace Strike2D
                     Debug.ThrowException(e);
                 }
             }
+            else if (t == typeof(SoundContainer))
+            {
+                try
+                {
+                    result = main.Engine.Audio.LoadSound(RootDirectory + fileName, key);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLineVerbose("Failed to load Sound \"" + fileName + "\"",
+                        Debug.DebugType.CriticalError);
+
+                    Debug.ThrowException(e);
+                }
+            }
 
             if (result == null)
             {
@@ -203,6 +221,15 @@ namespace Strike2D
                     Debug.DebugType.CriticalError);
             }
             return result;
+        }
+
+        /// <summary>
+        /// Unloads everything
+        /// </summary>
+        public void Unload()
+        {
+            main.Engine.Audio.DisposeAll();
+            Assets.Clear();
         }
     }
 }
