@@ -82,7 +82,7 @@ namespace Strike2D
 
         public void Draw(SpriteBatch sb)
         {
-            backgrounds[selectedBackground].DrawFillScreen(sb);
+            backgrounds[selectedBackground].Draw(sb);
         }
     }
 }

@@ -118,6 +118,12 @@ namespace Strike2D
                 // Sound
                 assetsToLoad.Add("theme", Load<SoundContainer>("Sound/Music/theme.mp3"));
                 
+                // Fonts
+                assetsToLoad.Add("font_regular", Load<SpriteFont>("Font/Larabie"));
+                
+                // Logo
+                assetsToLoad.Add("logo_full", Load<Texture2D>("Materials/UI/full_logo.png"));
+                
                 // Bake the list
                 Assets = new SortedDictionary<string, object>(assetsToLoad);
                 loaded = true;
@@ -178,7 +184,7 @@ namespace Strike2D
             
             Debug.WriteLineVerbose("Loading " + fileName + " type of " + t);
 
-            if (!File.Exists(RootDirectory + fileName))
+            if (!File.Exists(RootDirectory + fileName) && t != typeof(SpriteFont))
             {
                 Debug.WriteLineVerbose("File \"" + fileName + " does not exist!", Debug.DebugType.CriticalError);
                 return default(T);
@@ -209,6 +215,20 @@ namespace Strike2D
                 catch (Exception e)
                 {
                     Debug.WriteLineVerbose("Failed to load Sound \"" + fileName + "\"",
+                        Debug.DebugType.CriticalError);
+
+                    Debug.ThrowException(e);
+                }
+            }
+            else if (t == typeof(SpriteFont))
+            {
+                try
+                {
+                    return main.Content.Load<SpriteFont>(fileName);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLineVerbose("Failed to load Font \"" + fileName + "\"",
                         Debug.DebugType.CriticalError);
 
                     Debug.ThrowException(e);

@@ -73,8 +73,6 @@ namespace Strike2D
             {
                 Alpha += fadeRate * gameTime;
                 Alpha = MathHelper.Clamp(Alpha, 0.0f, 1.0f);
-                
-                
 
                 if (Alpha <= 0.0f || Alpha >= 1.0f) { Fade = false; }
             }

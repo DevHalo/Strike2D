@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -14,6 +15,7 @@ namespace Strike2D
         private static InputManager input;      // Handles Input
         private static AssetManager assets;     // Handles asset loading and unloading
         private static AudioManager audio;      // Handles audio
+        private Strike2D main;                  // Main XNA Game Class
 
         // Accessors
         public InputManager Input => input;
@@ -32,6 +34,15 @@ namespace Strike2D
         
         // Screens
         private Menu menuManager;
+        
+        // Rasterizer
+        private RasterizerState rasterizer;
+        
+        // Render Target
+        private RenderTarget2D mainRenderTarget;
+        
+        // Font
+        private SpriteFont mainFont;
 
         /// <summary>
         /// Returns the center coordinate of the screen
@@ -75,9 +86,16 @@ namespace Strike2D
             assets = new AssetManager(main);
             Debug.WriteLineVerbose("Ready to Go. Welcome to Strike 2D " + Manifest.Version);
             CurState = State.Splash;
+
+            rasterizer = new RasterizerState() {ScissorTestEnable = true};
             
             RandomGenerator = new Random();
-            
+
+            mainRenderTarget = new RenderTarget2D(
+                main.GraphicsDevice,
+                1920, 1080);
+
+            this.main = main;
         }
 
         /// <summary>
@@ -107,6 +125,7 @@ namespace Strike2D
                         menuManager = new Menu(this);
                         menuManager.PlayMenuMusic();
                         CurState = State.Menu;
+                        mainFont = (SpriteFont)AssetManager.GetAsset("font_regular");
                     }
                     break;
                 case State.Menu:
@@ -125,7 +144,8 @@ namespace Strike2D
         /// <param name="sb"></param>
         public void Draw(SpriteBatch sb)
         {
-            sb.Begin();
+            main.GraphicsDevice.SetRenderTarget(mainRenderTarget);
+            sb.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, null, rasterizer, null, null);
             
             switch (curState)
             {
@@ -133,6 +153,7 @@ namespace Strike2D
                     break;
                 case State.Menu:
                     menuManager.Draw(sb);
+                    sb.DrawString(mainFont, "Strike 2D", new Vector2(20, 20), Color.White);
                     break;
                 case State.Loading:
                     break;
@@ -152,6 +173,18 @@ namespace Strike2D
             {
                 obj.Draw(sb);
             }
+            
+            sb.End();
+            
+            main.GraphicsDevice.SetRenderTarget(null);
+            
+            sb.Begin();
+
+            float xRatio = Settings.ScreenX / 1920f;
+            float yRatio = Settings.ScreenY / 1080f;
+            
+            sb.Draw(mainRenderTarget, Vector2.Zero, null, Color.White, 0f, 
+                Vector2.Zero, new Vector2(xRatio, yRatio), SpriteEffects.None, 0f);
             
             sb.End();
         }

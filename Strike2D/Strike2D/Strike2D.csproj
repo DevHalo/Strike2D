@@ -89,6 +89,7 @@
     <_Content Include="..\Content\**" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Content\Font" />
     <Folder Include="Content\Font\" />
     <Folder Include="Content\Maps\" />
     <Folder Include="Content\Materials\Game\" />
