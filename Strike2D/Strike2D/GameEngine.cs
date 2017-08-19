@@ -153,7 +153,7 @@ namespace Strike2D
                     break;
                 case State.Menu:
                     menuManager.Draw(sb);
-                    sb.DrawString(mainFont, "Strike 2D", new Vector2(20, 20), Color.White);
+                    sb.DrawString(mainFont, "Strike 2D - " + Manifest.Environment, new Vector2(20, 20), Color.White);
                     break;
                 case State.Loading:
                     break;
@@ -164,8 +164,6 @@ namespace Strike2D
                     {
                         obj.Draw(sb);
                     }
-                    
-                    menuManager.Draw(sb);
                     break;
             }
 
@@ -173,6 +171,7 @@ namespace Strike2D
             {
                 obj.Draw(sb);
             }
+            
             
             sb.End();
             

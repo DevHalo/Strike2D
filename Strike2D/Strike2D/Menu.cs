@@ -1,5 +1,7 @@
 ﻿// Handles all menu input and drawing
 
+using LightEngine;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -11,7 +13,12 @@ namespace Strike2D
         private int selectedBackground;
         private SoundContainer menuTheme;
         private GameEngine engine;
-        
+        private Sprite logo;
+
+        private float animationTime;
+        private Rectangle logoScissor;
+        private Vector2 endPos;
+
         public enum MenuState
         {
             TransitionIn,
@@ -26,12 +33,18 @@ namespace Strike2D
             backgrounds = new[]
             {
                 new Sprite(false, "ct_background", 0.4f),
-                new Sprite(false, "t_background", 0.4f), 
+                new Sprite(false, "t_background", 0.4f),
             };
+            
+            logo = new Sprite(false, "logo_full", 1f);
+            
+            endPos = new Vector2(GameEngine.Center().X - logo.Texture.Width / 2f, (Settings.ScreenY * 0.50f));
+            
+            logo.Position = new Vector2(GameEngine.Center().X, endPos.Y);
 
             selectedBackground = GameEngine.RandomGenerator.Next(2);
 
-            menuTheme = (SoundContainer)AssetManager.GetAsset("theme");
+            menuTheme = (SoundContainer) AssetManager.GetAsset("theme");
 
             engine = instance;
         }
@@ -52,6 +65,7 @@ namespace Strike2D
                     if (backgrounds[selectedBackground].Alpha >= 1.0f)
                     {
                         menuState = MenuState.Main;
+                        logo.ChangeFade(true);
                     }
                     else
                     {
@@ -63,6 +77,12 @@ namespace Strike2D
 
                     break;
                 case MenuState.Main:
+                    animationTime += gameTime;
+                    logo.Position = new Vector2(
+                        (float)EasingFunctions.Animate(animationTime, GameEngine.Center().X, endPos.X, 1.0f, 
+                            EasingFunctions.AnimationType.QuarticOut),
+                        logo.Position.Y
+                    );
                     break;
                 case MenuState.Options:
                     break;
@@ -76,13 +96,28 @@ namespace Strike2D
             {
                 engine.Exit();
             }
-            
+
             backgrounds[selectedBackground].Update(gameTime);
+            logo.Update(gameTime);
         }
 
         public void Draw(SpriteBatch sb)
         {
             backgrounds[selectedBackground].Draw(sb);
+            
+            logoScissor = new Rectangle(
+                (int)EasingFunctions.Animate(animationTime, GameEngine.Center().X, endPos.X, 1.0f, EasingFunctions.AnimationType.QuarticOut),
+                (int)logo.Position.Y,
+                (int)EasingFunctions.Animate(animationTime, 0, logo.Texture.Width, 1.0f, EasingFunctions.AnimationType.QuarticOut),
+                logo.Texture.Height
+            );
+
+            Rectangle oldRect = sb.GraphicsDevice.ScissorRectangle;
+            sb.GraphicsDevice.ScissorRectangle = logoScissor;
+            
+            logo.Draw(sb);
+
+            sb.GraphicsDevice.ScissorRectangle = oldRect;
         }
     }
 }

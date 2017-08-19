@@ -10,7 +10,7 @@ namespace Strike2D
         public Color SpriteColour = Color.White;
         public string AssetKey { get; private set; }
         public float Alpha { get; private set; }
-        private Texture2D sprite;
+        public Texture2D Texture { get; private set; }
         private float fadeRate;
 
         public enum AnimationState
@@ -36,9 +36,9 @@ namespace Strike2D
             Alpha = startActive ? 1.0f : 0.0f;
             this.fadeRate = fadeRate;
 
-            sprite = (Texture2D)AssetManager.GetAsset(assetKey);
+            Texture = (Texture2D)AssetManager.GetAsset(assetKey);
             
-            Bounds = new Rectangle((int)Position.X, (int)Position.Y, sprite.Width, sprite.Height);
+            Bounds = new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height);
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace Strike2D
         {
             if (!Render) { return; }
             
-            sb.Draw(sprite, Position, SpriteColour * Alpha);
+            sb.Draw(Texture, Position, SpriteColour * Alpha);
         }
 
         /// <summary>
@@ -93,10 +93,10 @@ namespace Strike2D
         {
             if (!Render) { return; }
             
-            float xRatio = (float)Settings.ScreenX / sprite.Width;
-            float yRatio = (float) Settings.ScreenY / sprite.Height;
+            float xRatio = (float)Settings.ScreenX / Texture.Width;
+            float yRatio = (float) Settings.ScreenY / Texture.Height;
             
-            sb.Draw(sprite, Position, null, (SpriteColour * Alpha), 0f, Vector2.Zero, new Vector2(xRatio, yRatio),
+            sb.Draw(Texture, Position, null, (SpriteColour * Alpha), 0f, Vector2.Zero, new Vector2(xRatio, yRatio),
                 SpriteEffects.None, 0f);
             
         }

@@ -94,7 +94,9 @@ namespace Strike2D
 
         public void Play(int volume)
         {
-            sound.Volume = MathHelper.Clamp(volume * Settings.MasterVolume, 0, 100) / 100f;
+            sound.Volume = MathHelper.Clamp((float)volume / Settings.MasterVolume, 0f, 1f);
+            Debug.WriteLineVerbose(sound.Volume.ToString());
+
             sound.Play();
         }
 
