@@ -81,6 +81,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Font\Larabie.xnb" />
     <Content Include="Content\Materials\Background\ct_background.png" />
     <Content Include="Content\Materials\Background\t_background.png" />
     <Content Include="strike2dlogo.ico" />
@@ -89,7 +90,6 @@
     <_Content Include="..\Content\**" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Content\Font" />
     <Folder Include="Content\Font\" />
     <Folder Include="Content\Maps\" />
     <Folder Include="Content\Materials\Game\" />
