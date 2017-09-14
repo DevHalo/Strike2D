@@ -1,12 +1,8 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Strike2D
@@ -111,6 +107,11 @@ namespace Strike2D
 
                 // Assets
                 
+                Texture2D pixelTexture = new Texture2D(main.GraphicsDevice, 1, 1);
+                pixelTexture.SetData(new [] {Color.White});
+
+                assetsToLoad.Add("pixelTexture", pixelTexture);
+                
                 // BGs
                 assetsToLoad.Add("t_background", Load<Texture2D>("Materials/Background/t_background.png"));
                 assetsToLoad.Add("ct_background", Load<Texture2D>("Materials/Background/ct_background.png"));
@@ -175,6 +176,7 @@ namespace Strike2D
         /// Loads a type from the RootDirectory folder
         /// </summary>
         /// <param name="fileName"> Filename including extension. Structure is relative to RootDirectory</param>
+        /// <param name="key"> String key used to identify the asset</param>
         /// <typeparam name="T"> Type you want to load</typeparam>
         /// <returns></returns>
         private object Load<T>(string fileName, string key = "")

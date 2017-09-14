@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -15,6 +14,7 @@ namespace Strike2D
         private static InputManager input;      // Handles Input
         private static AssetManager assets;     // Handles asset loading and unloading
         private static AudioManager audio;      // Handles audio
+        private static UIManager ui;            // Handles UI elements
         private Strike2D main;                  // Main XNA Game Class
 
         // Accessors
@@ -26,7 +26,6 @@ namespace Strike2D
         public static Random RandomGenerator { get; private set; }   // Used for random numbers
         
         // GameObjects
-        public List<GameObject> UIObjects = new List<GameObject>();
         public List<GameObject> IngameObjects = new List<GameObject>();
         
         // The current state
@@ -43,12 +42,21 @@ namespace Strike2D
         
         // Font
         private SpriteFont mainFont;
-
+        
         /// <summary>
         /// Returns the center coordinate of the screen
         /// </summary>
         /// <returns></returns>
         public static Vector2 Center()
+        {
+            return new Vector2(960f, 540f);
+        }
+
+        /// <summary>
+        /// Returns the center coordinates of the screen given the user resolution
+        /// </summary>
+        /// <returns></returns>
+        public static Vector2 ScreenCenter()
         {
             return new Vector2(Settings.ScreenX / 2f, Settings.ScreenY / 2f);
         }
@@ -84,10 +92,11 @@ namespace Strike2D
             audio = new AudioManager();
             input = new InputManager();
             assets = new AssetManager(main);
+            ui = new UIManager();
             Debug.WriteLineVerbose("Ready to Go. Welcome to Strike 2D " + Manifest.Version);
             CurState = State.Splash;
 
-            rasterizer = new RasterizerState() {ScissorTestEnable = true};
+            rasterizer = new RasterizerState {ScissorTestEnable = true};
             
             RandomGenerator = new Random();
 
@@ -165,13 +174,7 @@ namespace Strike2D
                         obj.Draw(sb);
                     }
                     break;
-            }
-
-            foreach (GameObject obj in UIObjects)
-            {
-                obj.Draw(sb);
-            }
-            
+            }            
             
             sb.End();
             

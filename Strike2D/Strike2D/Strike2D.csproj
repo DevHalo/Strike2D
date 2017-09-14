@@ -57,13 +57,14 @@
   <ItemGroup>
     <Compile Include="AssetManager.cs" />
     <Compile Include="AudioManager.cs" />
+    <Compile Include="Button.cs" />
     <Compile Include="Camera2D.cs" />
     <Compile Include="Debug.cs" />
     <Compile Include="EasingFunctions.cs" />
     <Compile Include="GameEngine.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="InputManager.cs" />
-    <Compile Include="InterfaceObject.cs" />
+    <Compile Include="GUIComponent.cs" />
     <Compile Include="Manifest.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="NetworkManager.cs" />
@@ -75,6 +76,7 @@
     <Compile Include="Settings.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="Strike2D.cs" />
+    <Compile Include="TextBox.cs" />
     <Compile Include="UIManager.cs" />
   </ItemGroup>
   <ItemGroup>
