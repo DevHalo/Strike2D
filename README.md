@@ -1,5 +1,5 @@
 Dependencies:
-- C# 6.0 is required to build this project. You can install Microsoft Build Tools 2015
+- C# 7.0 is required to build this project. You can install Microsoft Build Tools 2015
 
 Installation Instructions:
 - Pull the repository.
