@@ -5,7 +5,7 @@ namespace Strike2D
 {
     public class Player : GameObject
     {
-        
+        public Vector2 Position { get; private set; }
         
         public override void Update(float gameTime)
         {
@@ -15,6 +15,5 @@ namespace Strike2D
         public override void Draw(SpriteBatch sb)
         {
         }
-
     }
 }

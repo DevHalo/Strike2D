@@ -92,7 +92,6 @@ namespace Strike2D
             audio = new AudioManager();
             input = new InputManager();
             assets = new AssetManager(main);
-            ui = new UIManager();
             Debug.WriteLineVerbose("Ready to Go. Welcome to Strike 2D " + Manifest.Version);
             CurState = State.Splash;
 
@@ -100,9 +99,11 @@ namespace Strike2D
             
             RandomGenerator = new Random();
 
-            mainRenderTarget = new RenderTarget2D(
+            mainRenderTarget = new RenderTarget2D
+            (
                 main.GraphicsDevice,
-                1920, 1080);
+                1920, 1080
+            );
 
             this.main = main;
         }
@@ -131,6 +132,8 @@ namespace Strike2D
                 case State.Loading:
                     if (AssetManager.Loaded())
                     {
+                        // Initialize UI and menus
+                        ui.Init();
                         menuManager = new Menu(this);
                         menuManager.PlayMenuMusic();
                         CurState = State.Menu;

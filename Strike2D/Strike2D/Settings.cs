@@ -164,7 +164,7 @@ namespace Strike2D
 
                 while (!reader.EndOfStream)
                 {
-                    string[] line = reader.ReadLine().Split(' ');
+                    string[] line = reader.ReadLine()?.Split(' ');
 
                     // Should be "key = value"
                     if (line.Length != 3) continue;

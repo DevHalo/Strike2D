@@ -1,5 +1,8 @@
 ﻿// Handles all incoming and outgoing messages
 
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics.PackedVector;
+
 namespace Strike2D
 {
     public class NetworkManager
@@ -14,6 +17,11 @@ namespace Strike2D
         public void Update()
         {
             
+        }
+
+        private void CompressVector()
+        {
+            IPackedVector<Vector2> packedVector = new Vector2();
         }
     }
 }

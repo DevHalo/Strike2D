@@ -41,6 +41,9 @@ namespace Strike2D
         {
             WriteLine(message, debugType);
 
+            // Do not write to the console in production
+            if (Manifest.Environment == Manifest.Release) return;
+            
             Console.ForegroundColor = ConsoleColor.White;
             switch (debugType)
             {

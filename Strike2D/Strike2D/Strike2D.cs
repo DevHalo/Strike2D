@@ -59,7 +59,7 @@ namespace Strike2D
                     break;
             }
             
-            Window.Title = "Strike 2D - " + Manifest.Version + " - " + Manifest.Environment + " Build";
+            Window.Title = "Strike 2D - " + Manifest.Version + " | " + Manifest.Environment + " Build";
             
             graphics.ApplyChanges();
             

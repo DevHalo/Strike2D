@@ -7,6 +7,8 @@ namespace Strike2DServer
     {
         public static void Main(string[] args)
         {
+            // Entry point for server
+            
         }
     }
 }

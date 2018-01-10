@@ -40,8 +40,13 @@ namespace Strike2D
         public UIManager()
         {
             GUIPages = new List<GUIPage>();
-            defaultFont = (SpriteFont) AssetManager.GetAsset("font_regular");
             Debug.WriteLineVerbose("UI Manager Initialized");
+        }
+
+        public void Init()
+        {
+            defaultFont = (SpriteFont) AssetManager.GetAsset("font_regular");
+            Debug.WriteLineVerbose("UI Manager Loaded Resources");
         }
 
         /// <summary>
