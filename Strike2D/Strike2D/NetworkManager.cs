@@ -21,7 +21,6 @@ namespace Strike2D
 
         private void CompressVector()
         {
-            IPackedVector<Vector2> packedVector = new Vector2();
         }
     }
 }

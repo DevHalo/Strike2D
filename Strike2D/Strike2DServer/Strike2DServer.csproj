@@ -37,6 +37,9 @@
       <HintPath>..\..\libs\lidgren-network-gen3\Lidgren.Network\bin\Release\Lidgren.Network.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="LiteNetLib, Version=0.7.147.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\libs\LiteNetLib\LiteNetLib.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
