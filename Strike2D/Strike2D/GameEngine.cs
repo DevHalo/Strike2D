@@ -92,6 +92,7 @@ namespace Strike2D
             audio = new AudioManager();
             input = new InputManager();
             assets = new AssetManager(main);
+            
             Debug.WriteLineVerbose("Ready to Go. Welcome to Strike 2D " + Manifest.Version);
             CurState = State.Splash;
 

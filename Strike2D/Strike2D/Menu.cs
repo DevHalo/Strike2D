@@ -1,5 +1,6 @@
 ﻿// Handles all menu input and drawing
 
+using CSCore.SoundOut;
 using LightEngine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -79,8 +80,8 @@ namespace Strike2D
                 case MenuState.Main:
                     animationTime += gameTime;
                     logo.Position = new Vector2(
-                        (float)EasingFunctions.Animate(animationTime, GameEngine.Center().X, endPos.X, 1.0f, 
-                            EasingFunctions.AnimationType.QuarticOut),
+                        (float)EasingFunctions.Animate(animationTime, GameEngine.Center().X, endPos.X, 2.0f, 
+                            EasingFunctions.AnimationType.QuinticOut),
                         logo.Position.Y
                     );
                     break;
@@ -97,6 +98,11 @@ namespace Strike2D
                 engine.Exit();
             }
 
+            if (menuTheme.PlayState() == PlaybackState.Stopped)
+            {
+                menuTheme.Play(Settings.MusicVolume);
+            }
+
             backgrounds[selectedBackground].Update(gameTime);
             logo.Update(gameTime);
         }
@@ -106,9 +112,9 @@ namespace Strike2D
             backgrounds[selectedBackground].Draw(sb);
             
             logoScissor = new Rectangle(
-                (int)EasingFunctions.Animate(animationTime, GameEngine.Center().X, endPos.X, 1.0f, EasingFunctions.AnimationType.QuarticOut),
+                (int)EasingFunctions.Animate(animationTime, GameEngine.Center().X, endPos.X, 2.0f, EasingFunctions.AnimationType.QuinticOut),
                 (int)logo.Position.Y,
-                (int)EasingFunctions.Animate(animationTime, 0, logo.Texture.Width, 1.0f, EasingFunctions.AnimationType.QuarticOut),
+                (int)EasingFunctions.Animate(animationTime, 0, logo.Texture.Width, 2.0f, EasingFunctions.AnimationType.QuinticOut),
                 logo.Texture.Height
             );
 

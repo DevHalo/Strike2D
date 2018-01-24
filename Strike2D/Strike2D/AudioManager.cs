@@ -86,6 +86,16 @@ namespace Strike2D
             this.source = source;
         }
 
+        public PlaybackState PlayState()
+        {
+            return sound.PlaybackState;
+        }
+
+        public long CurrentPosition()
+        {
+            return source.Position;
+        }
+
         public void Dispose()
         {
             sound.Dispose();
