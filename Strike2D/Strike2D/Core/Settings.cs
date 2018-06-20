@@ -7,8 +7,9 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using Strike2D.DevTools;
 
-namespace Strike2D
+namespace Strike2D.Core
 {
     public static class Settings
     {

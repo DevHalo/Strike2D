@@ -4,14 +4,15 @@ using System.IO;
 using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Strike2D.DevTools;
 
-namespace Strike2D
+namespace Strike2D.Core
 {
     public class AssetManager
     {
         public static SortedDictionary<string, object> Assets { get; private set; }
         
-        private static volatile bool loaded = false;
+        private static volatile bool loaded;
         private volatile int loadedAssets = 0;
         
         // Static variables for current loaded state
@@ -252,6 +253,7 @@ namespace Strike2D
         {
             main.Engine.Audio.DisposeAll();
             Assets.Clear();
+            loaded = false;
         }
     }
 }

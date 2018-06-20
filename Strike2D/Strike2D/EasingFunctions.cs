@@ -5,9 +5,10 @@
 // Modified Date: Jan 2nd, 2016
 // Description: See Below.
 // Aug 14th 2017: Ported from old xna project
+
 using System;
 
-namespace LightEngine
+namespace Strike2D
 {
     /// <summary>
     /// Author: Mark Voong

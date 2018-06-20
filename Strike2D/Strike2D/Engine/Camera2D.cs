@@ -5,10 +5,11 @@
 // Modified Date: Jan 18th, 2016
 // Description: Handles logic for the camera
 // Aug 14th 2017: Ported from old xna project
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Strike2D
+namespace Strike2D.Engine
 {
     public class Camera2D
     {

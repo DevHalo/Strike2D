@@ -1,4 +1,4 @@
-﻿namespace Strike2D
+﻿namespace Strike2D.Core.Multiplayer
 {
     public class Profile
     {

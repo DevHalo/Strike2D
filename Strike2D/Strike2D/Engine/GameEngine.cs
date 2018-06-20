@@ -5,8 +5,10 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Strike2D.Core;
+using Strike2D.DevTools;
 
-namespace Strike2D
+namespace Strike2D.Engine
 {
     public class GameEngine
     {

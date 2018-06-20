@@ -1,12 +1,12 @@
 ﻿// Handles all menu input and drawing
 
 using CSCore.SoundOut;
-using LightEngine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Strike2D.Core;
 
-namespace Strike2D
+namespace Strike2D.Engine
 {
     public class Menu
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Strike2D
+namespace Strike2D.Engine
 {
     public class Player : GameObject
     {

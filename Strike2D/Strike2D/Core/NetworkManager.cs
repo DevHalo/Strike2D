@@ -1,9 +1,6 @@
 ﻿// Handles all incoming and outgoing messages
 
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics.PackedVector;
-
-namespace Strike2D
+namespace Strike2D.Core
 {
     public class NetworkManager
     {

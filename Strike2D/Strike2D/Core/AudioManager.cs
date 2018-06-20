@@ -4,8 +4,9 @@ using CSCore;
 using CSCore.Codecs;
 using CSCore.SoundOut;
 using Microsoft.Xna.Framework;
+using Strike2D.DevTools;
 
-namespace Strike2D
+namespace Strike2D.Core
 {
     public class AudioManager
     {

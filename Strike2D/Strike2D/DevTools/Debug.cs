@@ -2,12 +2,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Strike2D
+namespace Strike2D.DevTools
 {
     /// <summary>
     /// Static class which handles console input and output.

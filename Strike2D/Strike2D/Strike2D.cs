@@ -3,6 +3,8 @@ using Microsoft.SqlServer.Server;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Strike2D.Core;
+using Strike2D.Engine;
 
 namespace Strike2D
 {
